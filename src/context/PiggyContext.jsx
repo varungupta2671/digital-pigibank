@@ -65,8 +65,33 @@ export function PiggyProvider({ children }) {
                     localStorage.removeItem('piggy_transactions');
 
                 } else {
-                    // Normal Load
-                    setGoals(dbGoals);
+                    // HEALER: Check for duplicate Bit IDs in loaded goals
+                    const healedGoals = dbGoals.map(g => {
+                        const ids = new Set();
+                        let hasDupes = false;
+                        const cleanPlan = g.savingsPlan.map(bit => {
+                            if (ids.has(bit.id)) {
+                                hasDupes = true;
+                                return { ...bit, id: crypto.randomUUID() }; // Regenerate ID
+                            }
+                            ids.add(bit.id);
+                            return bit;
+                        });
+
+                        if (hasDupes) {
+                            console.log(`Healed goal ${g.name}: Fixed duplicate IDs`);
+                            return { ...g, savingsPlan: cleanPlan };
+                        }
+                        return g;
+                    });
+
+                    if (JSON.stringify(healedGoals) !== JSON.stringify(dbGoals)) {
+                        await Promise.all(healedGoals.map(g => db.set(STORES_CONSTANTS.GOALS, g)));
+                        setGoals(healedGoals);
+                    } else {
+                        setGoals(dbGoals);
+                    }
+
                     setAccounts(dbAccounts);
                     setTransactions(dbTransactions);
                     setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
@@ -92,7 +117,8 @@ export function PiggyProvider({ children }) {
     const cancelEditing = () => setIsEditing(false);
 
     const createGoal = async (name, amount, slots, frequency, durationValue, durationUnit) => {
-        const newId = Date.now();
+        // Ensure strictly unique ID for Goal
+        const newId = Date.now() + Math.floor(Math.random() * 1000);
         const plan = generatePlanLogic(amount, slots, frequency);
 
         const newGoal = {
@@ -139,7 +165,7 @@ export function PiggyProvider({ children }) {
             let rem = amount - (bitAmount * slots);
             for (let i = 0; i < slots; i++) {
                 plan.push({
-                    id: `bit-${Date.now()}-${i}`,
+                    id: crypto.randomUUID(),
                     index: i + 1,
                     amount: i < rem ? bitAmount + 1 : bitAmount,
                     status: 'pending',
@@ -166,7 +192,7 @@ export function PiggyProvider({ children }) {
 
         for (let i = 0; i < slots; i++) {
             plan.push({
-                id: `bit-${Date.now()}-${i}`,
+                id: crypto.randomUUID(),
                 index: i + 1,
                 amount: rawPlan[i],
                 status: 'pending',

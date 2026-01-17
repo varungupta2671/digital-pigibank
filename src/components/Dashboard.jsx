@@ -63,16 +63,24 @@ export default function Dashboard() {
                     <div className="relative">
                         <button
                             onClick={() => setShowGoalMenu(true)}
-                            className="flex items-center gap-2 text-2xl text-[#E8DCC4] mb-1 hover:text-[#CDA434] transition-colors font-['Righteous'] tracking-wide group"
+                            className="flex items-center gap-2 text-2xl text-[#FFF8E7] mb-1 hover:text-[#FFD700] transition-colors font-['Righteous'] tracking-wide group"
                         >
-                            <Trophy className="w-6 h-6 text-[#CDA434]" />
+                            <Trophy className="w-6 h-6 text-[#FFD700]" />
                             {goal.name || 'MY GOAL'}
-                            <div className="bg-[#3E2723] p-1 rounded-md border border-[#5D4037] group-hover:border-[#CDA434] transition-colors">
-                                <ChevronRight className="w-4 h-4 text-[#CDA434]" />
+                            <div className="bg-[#2C1810] p-1 rounded-md border border-[#5D4037] group-hover:border-[#FFD700] transition-colors">
+                                <ChevronRight className="w-4 h-4 text-[#FFD700]" />
                             </div>
                         </button>
-                        <p className="text-[#8D6E63] text-xs font-bold uppercase tracking-widest pl-1">Piggy Bank OS v1.0</p>
+                        <p className="text-[#A1887F] text-xs font-bold uppercase tracking-widest pl-1">Piggy Bank OS v2.0</p>
                     </div>
+
+                    {/* NEW NAVIGATION BUTTON - Visible explicitly */}
+                    <button
+                        onClick={() => setShowGoalMenu(true)}
+                        className="bg-[#2C1810] text-[#FFD700] px-3 py-2 rounded-lg border border-[#5D4037] text-[10px] font-bold uppercase tracking-widest hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
+                    >
+                        My Goals
+                    </button>
                 </div>
 
                 {/* Digital Counter Display */}
