@@ -157,7 +157,7 @@ export default function PlanList() {
             <div className="p-4 bg-[#1A0B08] rounded-xl border-4 border-[#FFD700] shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative overflow-hidden">
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
 
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-3 relative z-10">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] landscape:grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-3 relative z-10">
                     {savingsPlan.map((bit) => {
                         const isPaid = bit.status === 'paid';
                         const date = new Date(bit.dueDate);

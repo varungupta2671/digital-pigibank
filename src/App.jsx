@@ -24,9 +24,9 @@ function InnerApp() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white pb-24 font-sans select-none">
+        <div className="min-h-screen landscape:h-screen bg-slate-950 text-white pb-24 landscape:pb-0 font-sans select-none">
             {/* Content Area */}
-            <div className="max-w-md mx-auto min-h-screen relative bg-slate-950 shadow-2xl overflow-hidden">
+            <div className="max-w-md md:max-w-none mx-auto md:mx-0 min-h-screen landscape:h-screen relative bg-slate-950 shadow-2xl md:shadow-none overflow-hidden">
                 <Dashboard />
             </div>
         </div>
