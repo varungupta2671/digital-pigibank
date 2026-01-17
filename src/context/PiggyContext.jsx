@@ -30,72 +30,36 @@ export function PiggyProvider({ children }) {
                 const dbTransactions = await db.getAll(STORES_CONSTANTS.TRANSACTIONS);
                 const activeId = await db.get(STORES_CONSTANTS.META, 'activeGoalId');
 
-                // MIGRATION CHECK: If IDB empty but LocalStorage has data
-                const lsGoal = localStorage.getItem('piggy_goal');
-                if (dbGoals.length === 0 && lsGoal) {
-                    console.log("Migrating from LocalStorage to IndexedDB...");
-                    const oldGoal = JSON.parse(lsGoal);
-                    const oldPlan = JSON.parse(localStorage.getItem('piggy_plan') || '[]');
-                    const oldAccounts = JSON.parse(localStorage.getItem('piggy_accounts') || '[]');
-                    const oldTransactions = JSON.parse(localStorage.getItem('piggy_transactions') || '[]');
-
-                    // Wrap in new structure
-                    const migratedGoal = {
-                        ...oldGoal,
-                        name: "My First Goal", // Default name for migrated goal
-                        savingsPlan: oldPlan
-                    };
-
-                    // Save to IDB
-                    await db.set(STORES_CONSTANTS.GOALS, migratedGoal);
-                    await db.setAll(STORES_CONSTANTS.ACCOUNTS, oldAccounts);
-                    await db.setAll(STORES_CONSTANTS.TRANSACTIONS, oldTransactions);
-                    await db.set(STORES_CONSTANTS.META, migratedGoal.id, 'activeGoalId');
-
-                    // Update State
-                    setGoals([migratedGoal]);
-                    setAccounts(oldAccounts);
-                    setTransactions(oldTransactions);
-                    setActiveGoalId(migratedGoal.id);
-
-                    // Cleanup LocalStorage
-                    localStorage.removeItem('piggy_goal');
-                    localStorage.removeItem('piggy_plan');
-                    localStorage.removeItem('piggy_accounts');
-                    localStorage.removeItem('piggy_transactions');
-
-                } else {
-                    // HEALER: Check for duplicate Bit IDs in loaded goals
-                    const healedGoals = dbGoals.map(g => {
-                        const ids = new Set();
-                        let hasDupes = false;
-                        const cleanPlan = g.savingsPlan.map(bit => {
-                            if (ids.has(bit.id)) {
-                                hasDupes = true;
-                                return { ...bit, id: crypto.randomUUID() }; // Regenerate ID
-                            }
-                            ids.add(bit.id);
-                            return bit;
-                        });
-
-                        if (hasDupes) {
-                            console.log(`Healed goal ${g.name}: Fixed duplicate IDs`);
-                            return { ...g, savingsPlan: cleanPlan };
+                // HEALER: Check for duplicate Bit IDs in loaded goals
+                const healedGoals = dbGoals.map(g => {
+                    const ids = new Set();
+                    let hasDupes = false;
+                    const cleanPlan = g.savingsPlan.map(bit => {
+                        if (ids.has(bit.id)) {
+                            hasDupes = true;
+                            return { ...bit, id: crypto.randomUUID() }; // Regenerate ID
                         }
-                        return g;
+                        ids.add(bit.id);
+                        return bit;
                     });
 
-                    if (JSON.stringify(healedGoals) !== JSON.stringify(dbGoals)) {
-                        await Promise.all(healedGoals.map(g => db.set(STORES_CONSTANTS.GOALS, g)));
-                        setGoals(healedGoals);
-                    } else {
-                        setGoals(dbGoals);
+                    if (hasDupes) {
+                        console.log(`Healed goal ${g.name}: Fixed duplicate IDs`);
+                        return { ...g, savingsPlan: cleanPlan };
                     }
+                    return g;
+                });
 
-                    setAccounts(dbAccounts);
-                    setTransactions(dbTransactions);
-                    setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
+                if (JSON.stringify(healedGoals) !== JSON.stringify(dbGoals)) {
+                    await Promise.all(healedGoals.map(g => db.set(STORES_CONSTANTS.GOALS, g)));
+                    setGoals(healedGoals);
+                } else {
+                    setGoals(dbGoals);
                 }
+
+                setAccounts(dbAccounts);
+                setTransactions(dbTransactions);
+                setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
             } catch (error) {
                 console.error("Failed to initialize DB:", error);
             } finally {
@@ -208,18 +172,33 @@ export function PiggyProvider({ children }) {
     };
 
     const updateGoal = async (updatedGoalData) => {
-        // For editing goal settings
-        // This effectively resets the plan if amounts change - simplistic approach for now as per v4
-        // If we want to support 'smart update', logic would be complex. 
-        // Assuming 'Update' button in UI triggers a re-generation or overwrite
-        await createGoal(
-            updatedGoalData.name || activeGoal.name,
-            updatedGoalData.amount,
-            updatedGoalData.slots,
-            updatedGoalData.frequency,
-            updatedGoalData.durationValue,
-            updatedGoalData.durationUnit
-        );
+        if (!activeGoal) return;
+
+        // If amount/slots changed, we need to regenerate the plan.
+        const shouldRegenerate =
+            parseFloat(updatedGoalData.amount) !== parseFloat(activeGoal.targetAmount) ||
+            parseInt(updatedGoalData.slots) !== parseInt(activeGoal.totalSlots) ||
+            updatedGoalData.frequency !== activeGoal.frequency;
+
+        let newSavingsPlan = activeGoal.savingsPlan;
+        if (shouldRegenerate) {
+            newSavingsPlan = generatePlanLogic(updatedGoalData.amount, updatedGoalData.slots, updatedGoalData.frequency);
+        }
+
+        const updatedGoal = {
+            ...activeGoal,
+            name: updatedGoalData.name || activeGoal.name,
+            targetAmount: parseFloat(updatedGoalData.amount),
+            totalSlots: parseInt(updatedGoalData.slots),
+            frequency: updatedGoalData.frequency,
+            durationValue: updatedGoalData.durationValue,
+            durationUnit: updatedGoalData.durationUnit,
+            savingsPlan: newSavingsPlan
+        };
+
+        // Update In-Place
+        await saveGoal(updatedGoal);
+        setIsEditing(false);
     };
 
     const switchGoal = async (goalId) => {
@@ -263,7 +242,7 @@ export function PiggyProvider({ children }) {
         }
     };
 
-    const resetGoal = async () => {
+    const deleteGoal = async () => {
         if (!activeGoalId) return;
         // Delete current goal
         const remainingGoals = goals.filter(g => g.id !== activeGoalId);
@@ -291,7 +270,7 @@ export function PiggyProvider({ children }) {
         addAccount,
         deleteAccount,
         makePayment,
-        resetGoal,
+        deleteGoal, // Renamed from resetGoal
         isEditing,
         startEditing,
         cancelEditing

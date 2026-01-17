@@ -145,106 +145,286 @@
   }
 
   /* ========================================
-     MINIMAL THEME - Monochrome Brutalist
+     MINIMAL THEME - Creative Brutalist Tech
      ======================================== */
   body[data-theme="minimal"] {
-    background: #FFFFFF;
-    font-family: 'Inter', sans-serif;
+    background-color: #FAFAFA;
+    background-image:
+      linear-gradient(#E5E5E5 1px, transparent 1px),
+      linear-gradient(90deg, #E5E5E5 1px, transparent 1px);
+    background-size: 20px 20px;
+    font-family: 'Space Grotesk', sans-serif;
     color: #000000;
   }
 
-  /* Core backgrounds */
+  /* --- Core Layout & Backgrounds --- */
   body[data-theme="minimal"] [class*="bg-[#0F0502]"],
-  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"] {
-    background-color: #FFFFFF !important;
-    border: 2px solid #000000 !important;
-    box-shadow: 4px 4px 0px #000000 !important;
-  }
-
+  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"],
   body[data-theme="minimal"] [class*="bg-[#1A0B08]"] {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
+    background: #FFFFFF !important;
     border: 2px solid #000000 !important;
+    box-shadow: 6px 6px 0px #000000 !important;
+    border-radius: 0px !important;
   }
 
-  body[data-theme="minimal"] [class*="bg-[#2C1810]"] {
-    background-color: #FFFFFF !important;
+  /* Modals / Overlays */
+  body[data-theme="minimal"] .fixed.inset-0.bg-\[\#0F0502\]\/90 {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  /* --- Typography --- */
+  body[data-theme="minimal"] h1,
+  body[data-theme="minimal"] h2,
+  body[data-theme="minimal"] h3 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.05em !important;
+    font-weight: 700 !important;
     color: #000000 !important;
-    border: 1px solid #000000 !important;
   }
 
-  body[data-theme="minimal"] [class*="bg-[#3E2723]"] {
-    background-color: #F0F0F0 !important;
+  body[data-theme="minimal"] [class*="font-mono"],
+  body[data-theme="minimal"] [class*="font-['VT323']"],
+  body[data-theme="minimal"] [class*="font-['Courier_Prime']"] {
+    font-family: 'JetBrains Mono', monospace !important;
+    letter-spacing: -0.05em !important;
   }
 
-  /* Text & Accents */
+  /* Ticket Amounts */
+  body[data-theme="minimal"] [class*="text-5xl"] {
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.1em !important;
+  }
+
+  /* --- Colors & Accents --- */
+  /* Normalize all text colors to black or dark gray */
   body[data-theme="minimal"] [class*="text-[#FFD700]"],
   body[data-theme="minimal"] [class*="text-[#FFF8E7]"],
-  body[data-theme="minimal"] [class*="text-[#00FF41]"] {
+  body[data-theme="minimal"] [class*="text-[#00FF41]"],
+  body[data-theme="minimal"] [class*="text-[#A1887F]"],
+  body[data-theme="minimal"] [class*="text-[#E8DCC4]"],
+  body[data-theme="minimal"] [class*="text-slate-"] {
     color: #000000 !important;
     text-shadow: none !important;
   }
 
-  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] [class*="text-"] {
-    color: #FFFFFF !important;
+  /* Subtitles / Secondary text */
+  body[data-theme="minimal"] p.text-\[\#A1887F\],
+  body[data-theme="minimal"] div.text-\[\#A1887F\] {
+    color: #555555 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.1em !important;
   }
 
-  body[data-theme="minimal"] [class*="text-[#A1887F]"] {
-    color: #404040 !important;
-    font-weight: 500 !important;
-  }
-
-  body[data-theme="minimal"] [class*="border-[#FFD700]"],
-  body[data-theme="minimal"] [class*="border-[#5D4037]"] {
-    border-color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#FFD700]"] {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    box-shadow: 2px 2px 0px #000000 !important;
-  }
-
-  /* Interactive Elements */
+  /* --- Buttons & Interactive --- */
   body[data-theme="minimal"] button {
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
     border-radius: 0px !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    transition: transform 0.1s cubic-bezier(0, 0, 0.2, 1) !important;
+    box-shadow: 4px 4px 0px #888888 !important;
   }
 
   body[data-theme="minimal"] button:hover {
     transform: translate(-2px, -2px) !important;
-    box-shadow: 4px 4px 0px #000000 !important;
+    box-shadow: 6px 6px 0px #000000 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
   }
 
   body[data-theme="minimal"] button:active {
-    transform: translate(0px, 0px) !important;
-    box-shadow: 1px 1px 0px #000000 !important;
+    transform: translate(2px, 2px) !important;
+    box-shadow: 0px 0px 0px #000000 !important;
   }
 
-  /* Progress Bar */
+  /* Specific override for "Close" or destructive buttons */
+  body[data-theme="minimal"] button.text-\[\#FF5252\] {
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    background: transparent !important;
+  }
+
+  body[data-theme="minimal"] button.text-\[\#FF5252\]:hover {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+  }
+
+  /* Tickets Grid Items */
+  body[data-theme="minimal"] button[class*="aspect-square"] {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+    transform: rotate(0deg) !important;
+    /* Force straight alignment */
+  }
+
+  body[data-theme="minimal"] button[class*="aspect-square"]:hover {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border-color: #000000 !important;
+  }
+
+  /* Paid Tickets */
+  body[data-theme="minimal"] button[disabled] {
+    background: #E5E5E5 !important;
+    color: #888888 !important;
+    border: 2px solid #CCCCCC !important;
+    box-shadow: none !important;
+    opacity: 0.6 !important;
+    background-image: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 5px,
+        #CCCCCC 5px,
+        #CCCCCC 6px) !important;
+  }
+
+  /* --- Progress Bar --- */
   body[data-theme="minimal"] [class*="bg-gradient-to-r"] {
     background: #000000 !important;
     box-shadow: none !important;
     animation: none !important;
+    height: 12px !important;
   }
 
-  /* Font Overrides */
-  body[data-theme="minimal"] [class*="font-['Righteous']"] {
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 900 !important;
-    letter-spacing: -0.05em !important;
-    text-transform: uppercase !important;
-  }
-
-  body[data-theme="minimal"] [class*="font-['VT323']"],
-  body[data-theme="minimal"] [class*="font-['Courier_Prime']"] {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-weight: 600 !important;
-  }
-
-  /* Specific Component Fixes */
-  body[data-theme="minimal"] .animate-pulse {
+  /* Remove all glow/animations from base */
+  body[data-theme="minimal"] .animate-pulse,
+  body[data-theme="minimal"] .animate-bounce,
+  body[data-theme="minimal"] .animate-spin {
     animation: none !important;
-    opacity: 1 !important;
+  }
+
+  /* Selection Checkmarks */
+  body[data-theme="minimal"] .text-\[\#FFD700\] {
+    color: #000000 !important;
+  }
+
+  /* Custom Scrollbar for Minimal */
+  body[data-theme="minimal"] ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    border-left: 1px solid #000000;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-thumb {
+    background: #000000;
+  }
+
+  /* --- Visibility Fixes for Specific Elements --- */
+
+  /* Goal Name / Headings */
+  body[data-theme="minimal"] h1,
+  body[data-theme="minimal"] h2,
+  body[data-theme="minimal"] h3,
+  body[data-theme="minimal"] h4,
+  body[data-theme="minimal"] [class*="font-['Righteous']"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  /* Theme Selection & My Goals Buttons (often likely these specific colors) */
+  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button,
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"],
+  body[data-theme="minimal"] button.group {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button:hover,
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"]:hover,
+  body[data-theme="minimal"] button.group:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+  }
+
+  /* Navbar / Top Bar Elements Override */
+  body[data-theme="minimal"] nav,
+  body[data-theme="minimal"] header {
+    background-color: #FFFFFF !important;
+    border-bottom: 2px solid #000000 !important;
+  }
+
+  /* Standardize ALL Button Hovers */
+  body[data-theme="minimal"] button:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border-color: #000000 !important;
+    box-shadow: 6px 6px 0px #000000 !important;
+    transform: translate(-2px, -2px) !important;
+  }
+
+  /* Select Text Color */
+  body[data-theme="minimal"] select {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+  }
+
+  /* Ensure text inside dark containers is visible if containers didn't switch */
+  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
+    color: #000000 !important;
   }
 }
+  /* --- Grid Tile Fixes --- */
+  /* Target the text spans specifically inside the tiles */
+  body[data-theme='minimal'] button[class*='aspect-square'] span,
+  body[data-theme='minimal'] button[class*='aspect-square'] div {
+      color: #000000 !important;
+  }
+
+  /* If tile is hovered, invert colors */
+  body[data-theme='minimal'] button[class*='aspect-square']:hover span,
+  body[data-theme='minimal'] button[class*='aspect-square']:hover div {
+      color: #FFFFFF !important;
+  }
+
+  /* 'Paid' tiles should stay gray/dim */
+  body[data-theme='minimal'] button[disabled] span,
+  body[data-theme='minimal'] button[disabled] div {
+      color: #888888 !important;
+  }
+
+  /* --- Pay Button Fixes --- */
+  /* The 'Open Payment App' button has complex SVG + Text structure */
+  body[data-theme='minimal'] button[class*='bg-white'] {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+      border: 2px solid #000000 !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white'] span.text-slate-700 {
+      color: #FFFFFF !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white']:hover {
+       background-color: #FFFFFF !important;
+       color: #000000 !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white']:hover span.text-slate-700 {
+      color: #000000 !important;
+  }
+
+  /* Fix SVG icons inside buttons */
+  body[data-theme='minimal'] button svg {
+      color: currentColor !important;
+  }
+
+  /* Force external link icon color */
+  body[data-theme='minimal'] .text-slate-400 {
+      color: currentColor !important;
+  }
+

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { cn } from '../utils/cn';
 
 export default function Dashboard() {
-    const { goal, goals, savingsPlan, resetGoal, startEditing, switchGoal } = usePiggy();
+    const { goal, goals, savingsPlan, deleteGoal, startEditing, switchGoal } = usePiggy();
     const { theme, setTheme } = useTheme();
     const [activeTab, setActiveTab] = useState('plan');
     const [showGoalMenu, setShowGoalMenu] = useState(false);
@@ -207,10 +207,11 @@ export default function Dashboard() {
                         <Pencil className="w-4 h-4" />
                     </button>
                     <button
-                        onClick={resetGoal}
+                        onClick={deleteGoal}
                         className="p-3 bg-[#1A0B08] text-[#FF5252] rounded-lg border-b-4 border-[#5D4037] hover:bg-[#2C1810] active:border-b-0 active:translate-y-1 transition-all text-xs font-bold"
+                        title="Delete Goal"
                     >
-                        RESET
+                        DELETE
                     </button>
                 </div>
             </div>
