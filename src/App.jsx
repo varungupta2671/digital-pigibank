@@ -1,10 +1,15 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { usePiggy, PiggyProvider } from './context/PiggyContext';
 import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
+import Header from './components/Header';
 import GoalForm from './components/GoalForm';
-import Dashboard from './components/Dashboard';
+import GoalsList from './pages/GoalsList';
+import GoalDetail from './pages/GoalDetail';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
-function InnerApp() {
+function AppContent() {
     const { goal, isEditing, isLoading } = usePiggy();
 
     if (isLoading) {
@@ -15,7 +20,8 @@ function InnerApp() {
         );
     }
 
-    if (!goal || isEditing) {
+    // Show goal form if editing or no goal exists
+    if (isEditing || (!goal && window.location.pathname.includes('/goal/'))) {
         return (
             <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
                 <GoalForm />
@@ -24,24 +30,30 @@ function InnerApp() {
     }
 
     return (
-        <div className="min-h-screen landscape:h-screen bg-slate-950 text-white pb-24 landscape:pb-0 font-sans select-none">
-            {/* Content Area */}
-            <div className="max-w-md md:max-w-none mx-auto md:mx-0 min-h-screen landscape:h-screen relative bg-slate-950 shadow-2xl md:shadow-none overflow-hidden">
-                <Dashboard />
-            </div>
+        <div className="min-h-screen bg-slate-950">
+            <Header />
+            <Routes>
+                <Route path="/" element={<GoalsList />} />
+                <Route path="/goal/:id" element={<GoalDetail />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
         </div>
     );
 }
 
 function App() {
     return (
-        <ThemeProvider>
-            <ToastProvider>
-                <PiggyProvider>
-                    <InnerApp />
-                </PiggyProvider>
-            </ToastProvider>
-        </ThemeProvider>
+        <BrowserRouter>
+            <ThemeProvider>
+                <ToastProvider>
+                    <PiggyProvider>
+                        <AppContent />
+                    </PiggyProvider>
+                </ToastProvider>
+            </ThemeProvider>
+        </BrowserRouter>
     );
 }
 
