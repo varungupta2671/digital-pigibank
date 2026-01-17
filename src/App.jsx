@@ -5,7 +5,15 @@ import Dashboard from './components/Dashboard';
 
 function PiggyApp() {
 
-    const { goal, isEditing } = usePiggy();
+    const { goal, isEditing, isLoading } = usePiggy();
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
+                <div className="animate-pulse">Loading Savings...</div>
+            </div>
+        );
+    }
 
     if (!goal || isEditing) {
         return (
