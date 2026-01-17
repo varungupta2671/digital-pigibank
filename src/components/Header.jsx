@@ -18,15 +18,15 @@ export default function Header() {
                 <Link to="/" className="flex items-center gap-3 group">
                     <img
                         src="/pwa-192x192.png"
-                        alt="Digital Piggy Bank"
+                        alt="DigiPiggy"
                         className="w-10 h-10 rounded-lg border-2 border-[#FFD700] group-hover:scale-110 transition-transform"
                     />
                     <div>
                         <h1 className="text-xl font-['Righteous'] text-[#FFD700] tracking-wide">
-                            DIGITAL PIGGY BANK
+                            DIGIPIGGY
                         </h1>
                         <p className="text-[8px] text-[#A1887F] uppercase tracking-widest font-bold">
-                            Smart Savings System
+                            Smart Digital Savings
                         </p>
                     </div>
                 </Link>

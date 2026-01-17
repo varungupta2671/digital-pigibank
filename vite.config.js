@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Digital Piggy Bank',
-        short_name: 'PiggyBank',
-        description: 'A smart digital savings application',
+        name: 'DigiPiggy - Smart Digital Savings',
+        short_name: 'DigiPiggy',
+        description: 'Your Smart Digital Piggy Bank Companion',
         theme_color: '#ffffff',
         icons: [
           {

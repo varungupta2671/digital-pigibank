@@ -15,7 +15,7 @@ export default function Achievements() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8">
+        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8 animate-fade-in">
             <div className="max-w-6xl mx-auto">
                 {/* Page Header */}
                 <div className="text-center mb-12">

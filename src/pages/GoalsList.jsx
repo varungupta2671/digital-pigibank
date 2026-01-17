@@ -17,7 +17,7 @@ export default function GoalsList() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8">
+        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8 animate-fade-in">
             <div className="max-w-6xl mx-auto">
                 {/* Page Header */}
                 <div className="text-center mb-8">
@@ -48,7 +48,7 @@ export default function GoalsList() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {goals.map((goal) => {
+                        {goals.map((goal, index) => {
                             const totalSaved = goal.savingsPlan
                                 ?.filter(bit => bit.status === 'paid')
                                 .reduce((sum, bit) => sum + bit.amount, 0) || 0;
@@ -58,7 +58,8 @@ export default function GoalsList() {
                                 <button
                                     key={goal.id}
                                     onClick={() => handleGoalClick(goal.id)}
-                                    className="bg-[#1A0B08] rounded-2xl p-6 border-4 border-[#FFD700] shadow-lg hover:scale-105 transition-transform text-left relative overflow-hidden group"
+                                    className="bg-[#1A0B08] rounded-2xl p-6 border-4 border-[#FFD700] shadow-lg hover:scale-105 transition-transform text-left relative overflow-hidden group animate-fade-in-up"
+                                    style={{ animationDelay: `${index * 100}ms` }}
                                 >
                                     {/* Texture Overlay */}
                                     <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>

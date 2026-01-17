@@ -25,9 +25,11 @@ export default function GoalDetail() {
         }
     }, [id, isLoading, goal, goals, switchGoal, navigate]);
 
-    if (!goal && !isLoading && goals.length > 0) {
-        return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading Goal...</div>;
-    }
+    if (!goal) return null; // Handle loading/redirect
 
-    return <Dashboard />;
+    return (
+        <div className="animate-fade-in">
+            <Dashboard />
+        </div>
+    );
 }

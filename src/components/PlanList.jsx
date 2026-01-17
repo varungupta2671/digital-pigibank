@@ -3,6 +3,7 @@ import { useToast } from '../context/ToastContext';
 import { useState } from 'react';
 import { Check, Lock, ExternalLink, ThumbsUp } from 'lucide-react';
 import { cn } from '../utils/cn';
+import Confetti from './Confetti';
 
 export default function PlanList() {
     const { savingsPlan, accounts, makePayment } = usePiggy();
@@ -11,6 +12,7 @@ export default function PlanList() {
     const [selectedBit, setSelectedBit] = useState(null);
     const [selectedAccount, setSelectedAccount] = useState('');
     const [paymentStep, setPaymentStep] = useState('initial');
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const handleTileClick = (bit) => {
         if (bit.status === 'paid') return;
@@ -39,6 +41,11 @@ export default function PlanList() {
         if (didPay) {
             makePayment(selectedBit.id, selectedAccount || 'manual');
             addToast(`Ticket Checked! ₹${selectedBit.amount} Saved.`, 'success');
+
+            // Trigger Confetti
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 2000);
+
             handleCloseModal();
         } else {
             setPaymentStep('initial');
@@ -47,6 +54,7 @@ export default function PlanList() {
 
     return (
         <div className="space-y-6 pb-20 font-['Courier_Prime']">
+            {showConfetti && <Confetti />}
 
             {/* Payment Modal Overlay */}
             {selectedBit && (
@@ -158,7 +166,7 @@ export default function PlanList() {
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
 
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] landscape:grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-3 relative z-10">
-                    {savingsPlan.map((bit) => {
+                    {savingsPlan.map((bit, index) => {
                         const isPaid = bit.status === 'paid';
                         const date = new Date(bit.dueDate);
                         const rotation = Math.random() * 4 - 2;
@@ -168,10 +176,13 @@ export default function PlanList() {
                                 key={bit.id}
                                 disabled={isPaid}
                                 onClick={() => handleTileClick(bit)}
-                                style={{ transform: isPaid ? 'scale(0.95)' : `rotate(${rotation}deg)` }}
+                                style={{
+                                    transform: isPaid ? 'scale(0.95)' : `rotate(${rotation}deg)`,
+                                    animationDelay: `${index * 50}ms`
+                                }}
                                 title={isPaid ? `Paid on ${new Date(bit.paidAt).toLocaleDateString()}` : `Due: ${date.toLocaleDateString()}`}
                                 className={`
-                                    aspect-square rounded-lg flex flex-col items-center justify-center transition-all duration-300 relative group p-1 hover:z-50 border-b-4 active:border-b-0 active:translate-y-1 active:rotate-0
+                                    aspect-square rounded-lg flex flex-col items-center justify-center transition-all duration-300 relative group p-1 hover:z-50 border-b-4 active:border-b-0 active:translate-y-1 active:rotate-0 animate-scale-in
                                     ${isPaid
                                         ? 'bg-[#0F0502] text-[#3E2723] border-[#1A1A1A] opacity-50 shadow-inner'
                                         : 'bg-[#FFFDE7] text-[#1A0B08] shadow-lg hover:scale-110 hover:bg-[#FFFFFF] border-[#D7CCC8]'
@@ -179,7 +190,7 @@ export default function PlanList() {
                                 `}
                             >
                                 {isPaid ? (
-                                    <Check className="w-6 h-6 text-[#3E2723]" />
+                                    <Check className="w-6 h-6 text-[#3E2723] animate-celebrate" />
                                 ) : (
                                     <>
                                         <span className="text-sm font-black tracking-tighter truncate w-full text-center font-['VT323'] text-xl">₹{bit.amount}</span>
@@ -202,7 +213,7 @@ export default function PlanList() {
             </div>
 
             <div className="text-center text-[#5D4037] text-[10px] uppercase tracking-[0.2em] opacity-50 mt-8">
-                Digital Piggy Bank Systems • 2026
+                DigiPiggy Systems • 2026
             </div>
         </div>
     );

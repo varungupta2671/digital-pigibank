@@ -149,9 +149,10 @@ export default function Dashboard() {
                         {/* Progress Bar */}
                         <div className="w-full mt-2 landscape:mt-3 h-2 landscape:h-3 bg-[#1A0B08] rounded-full border border-[#5D4037] p-[1px]">
                             <div
-                                className="h-full bg-gradient-to-r from-[#FFD700] via-[#FFF8E7] to-[#FFD700] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)] relative overflow-hidden transition-all duration-1000"
-                                style={{ width: `${progress}%` }}
+                                className="h-full bg-gradient-to-r from-[#FFD700] via-[#FFF8E7] to-[#FFD700] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)] relative overflow-hidden transition-all duration-1000 ease-out"
+                                style={{ width: '0%', animation: 'fill-progress 1s ease-out forwards 0.3s' }}
                             >
+                                <style>{`@keyframes fill-progress { from { width: 0% } to { width: ${progress}% } }`}</style>
                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-30"></div>
                             </div>
                         </div>
@@ -163,12 +164,12 @@ export default function Dashboard() {
 
                     {/* Info Tickets */}
                     <div className="grid grid-cols-2 gap-2 landscape:gap-3 relative z-10 mb-2 landscape:mb-3 font-['VT323']">
-                        <div className="bg-[#FFFDE7] text-[#1A0B08] p-2 landscape:p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105">
+                        <div className="bg-[#FFFDE7] text-[#1A0B08] p-2 landscape:p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105 animate-scale-in delay-100">
                             <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0F0502] rounded-full"></div>
                             <p className="text-[8px] landscape:text-[10px] uppercase font-sans font-bold tracking-widest opacity-60">Saved So Far</p>
                             <p className="text-lg landscape:text-2xl font-bold">₹{totalSaved.toLocaleString()}</p>
                         </div>
-                        <div className="bg-[#FFFDE7] text-[#1A0B08] p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105">
+                        <div className="bg-[#FFFDE7] text-[#1A0B08] p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105 animate-scale-in delay-200">
                             <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0F0502] rounded-full"></div>
                             <p className="text-[8px] landscape:text-[10px] uppercase font-sans font-bold tracking-widest opacity-60">Time Left</p>
                             <p className="text-lg landscape:text-2xl font-bold">{getTimeLeft()}</p>

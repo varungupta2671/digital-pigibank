@@ -2,8 +2,8 @@ import { Trophy, Target, Zap, Shield, Sparkles, Heart, Users } from 'lucide-reac
 
 export default function About() {
     return (
-        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8 overflow-hidden">
-            <div className="max-w-5xl mx-auto">
+        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-6 md:p-12 animate-fade-in">
+            <div className="max-w-3xl mx-auto space-y-12">
                 {/* Animated Background Elements */}
                 <div className="fixed inset-0 pointer-events-none opacity-10">
                     <div className="absolute top-20 left-10 w-32 h-32 bg-[#FFD700] rounded-full blur-3xl animate-pulse"></div>
@@ -18,7 +18,7 @@ export default function About() {
                         </div>
                     </div>
                     <h1 className="text-5xl md:text-6xl font-['Righteous'] text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FFF8E7] to-[#FFD700] mb-4 animate-fade-in">
-                        DIGITAL PIGGY BANK
+                        DIGIPIGGY
                     </h1>
                     <p className="text-[#A1887F] text-xl md:text-2xl font-['VT323'] tracking-wide">
                         Your Smart Companion for Achieving Financial Dreams 💰
@@ -36,7 +36,7 @@ export default function About() {
                             <h2 className="text-3xl font-['Righteous'] text-[#FFD700]">Our Mission</h2>
                         </div>
                         <p className="text-[#FFF8E7] text-lg leading-relaxed">
-                            We believe saving money shouldn't feel like a chore. <span className="text-[#FFD700] font-bold">Digital Piggy Bank</span> transforms
+                            We believe saving money shouldn't feel like a chore. <span className="text-[#FFD700] font-bold">DigiPiggy</span> transforms
                             your financial journey into an exciting adventure! Break down those big dreams into bite-sized "tickets"
                             and watch your progress soar. Every small step counts, and we're here to celebrate each one with you! 🎉
                         </p>
