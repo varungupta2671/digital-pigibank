@@ -99,24 +99,6 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  /* Progress bar glow */
-  body[data-theme="cyber"] [class*="bg-gradient-to-r"] {
-    background: linear-gradient(90deg, #FF00FF 0%, #00FFFF 50%, #FF00FF 100%) !important;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4) !important;
-    animation: cyber-shimmer 3s linear infinite !important;
-  }
-
-  /* Font override for cyber theme */
-  body[data-theme="cyber"] [class*="font-['Righteous']"],
-  body[data-theme="cyber"] [class*="font-['VT323']"] {
-    font-family: 'Orbitron', sans-serif !important;
-    letter-spacing: 0.1em !important;
-  }
-
-  body[data-theme="cyber"] [class*="font-['Courier_Prime']"] {
-    font-family: 'Share Tech Mono', monospace !important;
-  }
-
   /* Animations */
   @keyframes cyber-pulse {
 
@@ -130,209 +112,170 @@
     }
   }
 
-  @keyframes cyber-shimmer {
-    0% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
   /* ========================================
-     MINIMAL THEME - Creative Brutalist Tech
+     MINIMAL THEME - Black & White Brutalist
      ======================================== */
   body[data-theme="minimal"] {
-    background-color: #FAFAFA;
-    background-image:
-      linear-gradient(#E5E5E5 1px, transparent 1px),
-      linear-gradient(90deg, #E5E5E5 1px, transparent 1px);
-    background-size: 20px 20px;
-    font-family: 'Space Grotesk', sans-serif;
-    color: #000000;
+    background: #FFFFFF;
+    font-family: 'Space Grotesk', 'JetBrains Mono', monospace;
   }
 
-  /* --- Core Layout & Backgrounds --- */
-  body[data-theme="minimal"] [class*="bg-[#0F0502]"],
-  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"],
+  /* Main backgrounds */
+  body[data-theme="minimal"] [class*="bg-[#0F0502]"] {
+    background: #FFFFFF !important;
+  }
+
   body[data-theme="minimal"] [class*="bg-[#1A0B08]"] {
     background: #FFFFFF !important;
-    border: 2px solid #000000 !important;
-    box-shadow: 6px 6px 0px #000000 !important;
-    border-radius: 0px !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 8px 8px 0 #000000 !important;
   }
 
-  /* Modals / Overlays */
-  body[data-theme="minimal"] .fixed.inset-0.bg-\[\#0F0502\]\/90 {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(8px) !important;
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"] {
+    background: #000000 !important;
   }
 
-  /* --- Typography --- */
-  body[data-theme="minimal"] h1,
-  body[data-theme="minimal"] h2,
-  body[data-theme="minimal"] h3 {
-    font-family: 'Space Grotesk', sans-serif !important;
-    text-transform: uppercase !important;
-    letter-spacing: -0.05em !important;
-    font-weight: 700 !important;
-    color: #000000 !important;
+  body[data-theme="minimal"] [class*="bg-[#3E2723]"] {
+    background: #1A1A1A !important;
   }
 
-  body[data-theme="minimal"] [class*="font-mono"],
-  body[data-theme="minimal"] [class*="font-['VT323']"],
-  body[data-theme="minimal"] [class*="font-['Courier_Prime']"] {
-    font-family: 'JetBrains Mono', monospace !important;
-    letter-spacing: -0.05em !important;
-  }
-
-  /* Ticket Amounts */
-  body[data-theme="minimal"] [class*="text-5xl"] {
-    font-size: 3.5rem !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.1em !important;
-  }
-
-  /* --- Colors & Accents --- */
-  /* Normalize all text colors to black or dark gray */
+  /* Accent colors - Black */
   body[data-theme="minimal"] [class*="text-[#FFD700]"],
-  body[data-theme="minimal"] [class*="text-[#FFF8E7]"],
-  body[data-theme="minimal"] [class*="text-[#00FF41]"],
-  body[data-theme="minimal"] [class*="text-[#A1887F]"],
-  body[data-theme="minimal"] [class*="text-[#E8DCC4]"],
-  body[data-theme="minimal"] [class*="text-slate-"] {
+  body[data-theme="minimal"] [class*="from-[#FFD700]"],
+  body[data-theme="minimal"] [class*="to-[#FFD700]"],
+  body[data-theme="minimal"] [class*="via-[#FFD700]"] {
     color: #000000 !important;
     text-shadow: none !important;
   }
 
-  /* Subtitles / Secondary text */
-  body[data-theme="minimal"] p.text-\[\#A1887F\],
-  body[data-theme="minimal"] div.text-\[\#A1887F\] {
-    color: #555555 !important;
-    font-family: 'JetBrains Mono', monospace !important;
-    text-transform: uppercase !important;
-    font-size: 0.7rem !important;
-    letter-spacing: 0.1em !important;
-  }
-
-  /* --- Buttons & Interactive --- */
-  body[data-theme="minimal"] button {
-    background: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #000000 !important;
-    border-radius: 0px !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    transition: transform 0.1s cubic-bezier(0, 0, 0.2, 1) !important;
-    box-shadow: 4px 4px 0px #888888 !important;
-  }
-
-  body[data-theme="minimal"] button:hover {
-    transform: translate(-2px, -2px) !important;
-    box-shadow: 6px 6px 0px #000000 !important;
-    background: #FFFFFF !important;
-    color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] button:active {
-    transform: translate(2px, 2px) !important;
-    box-shadow: 0px 0px 0px #000000 !important;
-  }
-
-  /* Specific override for "Close" or destructive buttons */
-  body[data-theme="minimal"] button.text-\[\#FF5252\] {
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
-    background: transparent !important;
-  }
-
-  body[data-theme="minimal"] button.text-\[\#FF5252\]:hover {
-    background: #000000 !important;
-    color: #FFFFFF !important;
-  }
-
-  /* Tickets Grid Items */
-  body[data-theme="minimal"] button[class*="aspect-square"] {
-    background: #FFFFFF !important;
-    color: #000000 !important;
-    box-shadow: 4px 4px 0px #000000 !important;
-    transform: rotate(0deg) !important;
-    /* Force straight alignment */
-  }
-
-  body[data-theme="minimal"] button[class*="aspect-square"]:hover {
-    background: #000000 !important;
-    color: #FFFFFF !important;
+  body[data-theme="minimal"] [class*="border-[#FFD700]"] {
     border-color: #000000 !important;
   }
 
-  /* Paid Tickets */
-  body[data-theme="minimal"] button[disabled] {
-    background: #E5E5E5 !important;
-    color: #888888 !important;
-    border: 2px solid #CCCCCC !important;
-    box-shadow: none !important;
-    opacity: 0.6 !important;
-    background-image: repeating-linear-gradient(45deg,
-        transparent,
-        transparent 5px,
-        #CCCCCC 5px,
-        #CCCCCC 6px) !important;
-  }
-
-  /* --- Progress Bar --- */
-  body[data-theme="minimal"] [class*="bg-gradient-to-r"] {
+  body[data-theme="minimal"] [class*="bg-[#FFD700]"],
+  body[data-theme="minimal"] [class*="from-yellow-"],
+  body[data-theme="minimal"] [class*="to-yellow-"],
+  body[data-theme="minimal"] [class*="from-orange-"],
+  body[data-theme="minimal"] [class*="to-orange-"] {
     background: #000000 !important;
     box-shadow: none !important;
-    animation: none !important;
-    height: 12px !important;
   }
 
-  /* Remove all glow/animations from base */
-  body[data-theme="minimal"] .animate-pulse,
-  body[data-theme="minimal"] .animate-bounce,
-  body[data-theme="minimal"] .animate-spin {
-    animation: none !important;
-  }
-
-  /* Selection Checkmarks */
-  body[data-theme="minimal"] .text-\[\#FFD700\] {
+  /* Primary text - Black on white */
+  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
     color: #000000 !important;
+    text-shadow: none !important;
   }
 
-  /* Custom Scrollbar for Minimal */
-  body[data-theme="minimal"] ::-webkit-scrollbar {
-    width: 8px;
+  body[data-theme="minimal"] [class*="text-[#A1887F]"] {
+    color: #666666 !important;
   }
 
-  body[data-theme="minimal"] ::-webkit-scrollbar-track {
-    background: #FFFFFF;
-    border-left: 1px solid #000000;
+  /* CRT Green -> Black */
+  body[data-theme="minimal"] [class*="text-[#00FF41]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
   }
 
-  body[data-theme="minimal"] ::-webkit-scrollbar-thumb {
-    background: #000000;
+  /* Tickets - White with black border */
+  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"] {
+    background: #FFFFFF !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 4px 4px 0 #000000 !important;
   }
 
-  /* --- Visibility Fixes for Specific Elements --- */
+  body[data-theme="minimal"] [class*="text-[#1A0B08]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-[#2C1810]"] {
+    color: #FFFFFF !important;
+    text-shadow: none !important;
+  }
+
+  /* Borders */
+  body[data-theme="minimal"] [class*="border-[#5D4037]"] {
+    border-color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="border-[#D7CCC8]"] {
+    border-color: #000000 !important;
+  }
+
+  /* Gradient backgrounds -> Solid colors */
+  body[data-theme="minimal"] [class*="bg-gradient"] {
+    background: #FFFFFF !important;
+  }
+
+  body[data-theme="minimal"] [class*="from-blue-"],
+  body[data-theme="minimal"] [class*="to-blue-"],
+  body[data-theme="minimal"] [class*="from-green-"],
+  body[data-theme="minimal"] [class*="to-green-"],
+  body[data-theme="minimal"] [class*="from-purple-"],
+  body[data-theme="minimal"] [class*="to-purple-"],
+  body[data-theme="minimal"] [class*="from-pink-"],
+  body[data-theme="minimal"] [class*="to-pink-"],
+  body[data-theme="minimal"] [class*="from-gray-"],
+  body[data-theme="minimal"] [class*="to-gray-"] {
+    background: #FFFFFF !important;
+  }
+
+  /* Remove all shadows and glows */
+  body[data-theme="minimal"] * {
+    box-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  /* Sharp edges - no rounded corners on main elements */
+  body[data-theme="minimal"] [class*="rounded-3xl"],
+  body[data-theme="minimal"] [class*="rounded-2xl"] {
+    border-radius: 0 !important;
+  }
+
+  /* Keep small rounded corners for buttons */
+  body[data-theme="minimal"] [class*="rounded-xl"],
+  body[data-theme="minimal"] [class*="rounded-lg"] {
+    border-radius: 4px !important;
+  }
+
+  /* Transitions - Sharp/instant */
+  body[data-theme="minimal"] * {
+    transition: all 0.1s steps(3) !important;
+  }
+
+  /* Hover effects - Invert colors */
+  body[data-theme="minimal"] button:hover,
+  body[data-theme="minimal"] a:hover {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    transform: translate(4px, 4px) !important;
+  }
+
+  /* Remove blur effects */
+  body[data-theme="minimal"] [class*="blur"] {
+    filter: none !important;
+  }
+
+  /* Disable animations */
+  body[data-theme="minimal"] [class*="animate-"] {
+    animation: none !important;
+  }
 
   /* Goal Name / Headings */
   body[data-theme="minimal"] h1,
   body[data-theme="minimal"] h2,
   body[data-theme="minimal"] h3,
   body[data-theme="minimal"] h4,
-  body[data-theme="minimal"] [class*="font-['Righteous']"] {
+  body[data-theme="minimal"] [class*="font-['Righteous'"] {
     color: #000000 !important;
     text-shadow: none !important;
   }
 
-  /* Theme Selection & My Goals Buttons (often likely these specific colors) */
+  /* Theme Selection & My Goals Buttons */
   body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button,
   body[data-theme="minimal"] [class*="bg-[#2C1810]"],
   body[data-theme="minimal"] button.group {
@@ -373,58 +316,94 @@
     border: 2px solid #000000 !important;
   }
 
-  /* Ensure text inside dark containers is visible if containers didn't switch */
+  /* Ensure text inside dark containers is visible */
   body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
     color: #000000 !important;
   }
-}
-  /* --- Grid Tile Fixes --- */
-  /* Target the text spans specifically inside the tiles */
+
+  /* Grid Tile Fixes */
   body[data-theme='minimal'] button[class*='aspect-square'] span,
   body[data-theme='minimal'] button[class*='aspect-square'] div {
-      color: #000000 !important;
+    color: #000000 !important;
   }
 
-  /* If tile is hovered, invert colors */
   body[data-theme='minimal'] button[class*='aspect-square']:hover span,
   body[data-theme='minimal'] button[class*='aspect-square']:hover div {
-      color: #FFFFFF !important;
+    color: #FFFFFF !important;
   }
 
-  /* 'Paid' tiles should stay gray/dim */
   body[data-theme='minimal'] button[disabled] span,
   body[data-theme='minimal'] button[disabled] div {
-      color: #888888 !important;
+    color: #888888 !important;
   }
 
-  /* --- Pay Button Fixes --- */
-  /* The 'Open Payment App' button has complex SVG + Text structure */
+  /* Pay Button Fixes */
   body[data-theme='minimal'] button[class*='bg-white'] {
-      background-color: #000000 !important;
-      color: #FFFFFF !important;
-      border: 2px solid #000000 !important;
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
   }
 
   body[data-theme='minimal'] button[class*='bg-white'] span.text-slate-700 {
-      color: #FFFFFF !important;
+    color: #FFFFFF !important;
   }
 
   body[data-theme='minimal'] button[class*='bg-white']:hover {
-       background-color: #FFFFFF !important;
-       color: #000000 !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
   }
 
   body[data-theme='minimal'] button[class*='bg-white']:hover span.text-slate-700 {
-      color: #000000 !important;
+    color: #000000 !important;
   }
 
   /* Fix SVG icons inside buttons */
   body[data-theme='minimal'] button svg {
-      color: currentColor !important;
+    color: currentColor !important;
   }
 
   /* Force external link icon color */
   body[data-theme='minimal'] .text-slate-400 {
-      color: currentColor !important;
+    color: currentColor !important;
   }
 
+  /* Additional fixes for About/Contact pages */
+  body[data-theme="minimal"] [class*="bg-clip-text"] {
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-transparent"] {
+    color: #000000 !important;
+  }
+
+  /* Override all gradient text */
+  body[data-theme="minimal"] .bg-gradient-to-r,
+  body[data-theme="minimal"] .bg-gradient-to-br {
+    background: #FFFFFF !important;
+  }
+
+  /* Icon colors */
+  body[data-theme="minimal"] svg {
+    color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-white"] {
+    color: #000000 !important;
+  }
+
+  /* Custom Scrollbar for Minimal */
+  body[data-theme="minimal"] ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    border-left: 1px solid #000000;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-thumb {
+    background: #000000;
+  }
+}
