@@ -2,7 +2,11 @@
 
 A modern, gamified savings application designed to help users reach their financial goals through small, manageable deposits.
 
-![Digital Piggy Bank](public/ios-mockup.png)
+
+<div align="center">
+  <img src="public/ios-mockup.png" width="45%" alt="iOS Mockup" />
+  <img src="public/android-mockup.png" width="45%" alt="Android Mockup" />
+</div>
 
 ## 🌟 Features
 
