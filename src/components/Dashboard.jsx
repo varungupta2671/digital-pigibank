@@ -7,22 +7,18 @@ import { cn } from '../utils/cn';
 
 export default function Dashboard() {
     const { goal, goals, savingsPlan, resetGoal, startEditing, switchGoal } = usePiggy();
-    const [activeTab, setActiveTab] = useState('plan'); // 'plan' or 'accounts'
+    const [activeTab, setActiveTab] = useState('plan');
     const [showGoalMenu, setShowGoalMenu] = useState(false);
 
-    // Statistics Logic
     const totalSaved = savingsPlan
         .filter(bit => bit.status === 'paid')
         .reduce((sum, bit) => sum + bit.amount, 0);
 
     const progress = Math.min((totalSaved / goal.targetAmount) * 100, 100);
 
-    // Time Left Calculation
     const getTimeLeft = () => {
         const created = new Date(goal.createdAt);
         let endDate = new Date(created);
-
-        // Add duration
         const val = parseInt(goal.durationValue || 0);
         const unit = goal.durationUnit || 'months';
 
@@ -43,7 +39,6 @@ export default function Dashboard() {
 
     const handleCreateNew = () => {
         setShowGoalMenu(false);
-        // Small timeout to ensure menu exit animation clears or state updates smoothly
         setTimeout(() => switchGoal(null), 100);
     }
 
@@ -53,10 +48,10 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="pb-8 font-[Courier Prime]">
-            {/* Retro Header Card */}
-            <div className="p-6 bg-[#2C1810] rounded-b-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border-b-4 border-[#CDA434] relative overflow-hidden">
-                {/* Wood Texture Overlay */}
+        <div className="pb-8 font-['Courier_Prime'] bg-[#0F0502] min-h-screen text-[#FFF8E7]">
+            {/* Header Card */}
+            <div className="p-6 bg-[#1A0B08] rounded-b-3xl shadow-lg border-b-4 border-[#FFD700] relative overflow-hidden">
+                {/* Texture Overlay */}
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
 
                 <div className="flex justify-between items-start mb-6 relative z-10">
@@ -74,7 +69,6 @@ export default function Dashboard() {
                         <p className="text-[#A1887F] text-xs font-bold uppercase tracking-widest pl-1">Piggy Bank OS v2.0</p>
                     </div>
 
-                    {/* NEW NAVIGATION BUTTON - Visible explicitly */}
                     <button
                         onClick={() => setShowGoalMenu(true)}
                         className="bg-[#2C1810] text-[#FFD700] px-3 py-2 rounded-lg border border-[#5D4037] text-[10px] font-bold uppercase tracking-widest hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
@@ -84,40 +78,40 @@ export default function Dashboard() {
                 </div>
 
                 {/* Digital Counter Display */}
-                <div className="text-center mb-6 relative z-10 bg-[#1A1A1A] p-4 rounded-xl border-2 border-[#4E342E] shadow-inner relative">
+                <div className="text-center mb-6 relative z-10 bg-[#0F0502] p-4 rounded-xl border-2 border-[#5D4037] shadow-inner relative">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-50"></div>
 
-                    <p className="text-[#5D4037] text-[10px] mb-1 uppercase tracking-widest font-bold font-sans">TARGET STATUS</p>
-                    <div className="text-5xl text-[#4ADE80] font-['VT323'] tracking-widest drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]">
+                    <p className="text-[#A1887F] text-[10px] mb-1 uppercase tracking-widest font-bold font-sans">TARGET STATUS</p>
+                    <div className="text-5xl text-[#00FF41] font-['VT323'] tracking-widest drop-shadow-[0_0_10px_rgba(0,255,65,0.5)]">
                         ₹{goal.targetAmount.toLocaleString()}
                     </div>
 
-                    {/* Progress Bar Retro */}
-                    <div className="w-full mt-4 h-3 bg-[#0F0F0F] rounded-full border border-[#333] p-[1px]">
+                    {/* Progress Bar */}
+                    <div className="w-full mt-4 h-3 bg-[#1A0B08] rounded-full border border-[#5D4037] p-[1px]">
                         <div
-                            className="h-full bg-gradient-to-r from-[#CDA434] via-[#F9A825] to-[#CDA434] rounded-full shadow-[0_0_15px_rgba(205,164,52,0.5)] relative overflow-hidden"
+                            className="h-full bg-gradient-to-r from-[#FFD700] via-[#FFF8E7] to-[#FFD700] rounded-full shadow-[0_0_10px_rgba(255,215,0,0.5)] relative overflow-hidden transition-all duration-1000"
                             style={{ width: `${progress}%` }}
                         >
-                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-20"></div>
+                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-30"></div>
                         </div>
                     </div>
                     <div className="flex justify-between mt-2 px-1">
-                        <span className="text-[#CDA434] text-xs font-['VT323'] text-xl">0%</span>
-                        <span className="text-[#CDA434] text-xs font-['VT323'] text-xl">{progress.toFixed(0)}% DONE</span>
+                        <span className="text-[#FFD700] text-xs font-['VT323'] text-xl">0%</span>
+                        <span className="text-[#FFD700] text-xs font-['VT323'] text-xl">{progress.toFixed(0)}% DONE</span>
                     </div>
                 </div>
 
                 {/* Info Tickets */}
-                <div className="grid grid-cols-2 gap-3 relative z-10 mb-4">
-                    <div className="bg-[#E8DCC4] text-[#3E2723] p-3 rounded-lg shadow-lg border-2 border-[#D7CCC8] relative rotate-[-1deg] transform transition-transform hover:rotate-0">
-                        <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#2C1810] rounded-full"></div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest opacity-60">Saved So Far</p>
-                        <p className="text-2xl font-bold font-['VT323']">₹{totalSaved.toLocaleString()}</p>
+                <div className="grid grid-cols-2 gap-3 relative z-10 mb-4 font-['VT323']">
+                    <div className="bg-[#FFFDE7] text-[#1A0B08] p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105">
+                        <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0F0502] rounded-full"></div>
+                        <p className="text-[10px] uppercase font-sans font-bold tracking-widest opacity-60">Saved So Far</p>
+                        <p className="text-2xl font-bold">₹{totalSaved.toLocaleString()}</p>
                     </div>
-                    <div className="bg-[#E8DCC4] text-[#3E2723] p-3 rounded-lg shadow-lg border-2 border-[#D7CCC8] relative rotate-[1deg] transform transition-transform hover:rotate-0">
-                        <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#2C1810] rounded-full"></div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest opacity-60">Time Left</p>
-                        <p className="text-2xl font-bold font-['VT323']">{getTimeLeft()}</p>
+                    <div className="bg-[#FFFDE7] text-[#1A0B08] p-3 rounded-lg shadow-lg border-2 border-[#5D4037] relative transform transition-transform hover:scale-105">
+                        <div className="absolute top-[-4px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0F0502] rounded-full"></div>
+                        <p className="text-[10px] uppercase font-sans font-bold tracking-widest opacity-60">Time Left</p>
+                        <p className="text-2xl font-bold">{getTimeLeft()}</p>
                     </div>
                 </div>
 
@@ -128,8 +122,8 @@ export default function Dashboard() {
                         className={cn(
                             "flex-1 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-all border-b-4 active:border-b-0 active:translate-y-1 flex items-center justify-center gap-2",
                             activeTab === 'plan'
-                                ? "bg-[#CDA434] text-[#2C1810] border-[#8D6E63] shadow-lg"
-                                : "bg-[#3E2723] text-[#A1887F] border-[#1A1A1A] hover:bg-[#4E342E]"
+                                ? "bg-[#FFD700] text-[#2C1810] border-[#8D6E63] shadow-[0_0_10px_rgba(255,215,0,0.5)]"
+                                : "bg-[#1A0B08] text-[#A1887F] border-[#5D4037] hover:bg-[#2C1810]"
                         )}
                     >
                         <Wallet className="w-4 h-4" />
@@ -140,8 +134,8 @@ export default function Dashboard() {
                         className={cn(
                             "flex-1 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-all border-b-4 active:border-b-0 active:translate-y-1 flex items-center justify-center gap-2",
                             activeTab === 'accounts'
-                                ? "bg-[#CDA434] text-[#2C1810] border-[#8D6E63] shadow-lg"
-                                : "bg-[#3E2723] text-[#A1887F] border-[#1A1A1A] hover:bg-[#4E342E]"
+                                ? "bg-[#FFD700] text-[#2C1810] border-[#8D6E63] shadow-[0_0_10px_rgba(255,215,0,0.5)]"
+                                : "bg-[#1A0B08] text-[#A1887F] border-[#5D4037] hover:bg-[#2C1810]"
                         )}
                     >
                         <Settings className="w-4 h-4" />
@@ -149,14 +143,14 @@ export default function Dashboard() {
                     </button>
                     <button
                         onClick={startEditing}
-                        className="p-3 bg-[#3E2723] text-[#CDA434] rounded-lg border-b-4 border-[#1A1A1A] hover:bg-[#4E342E] active:border-b-0 active:translate-y-1 transition-all"
+                        className="p-3 bg-[#1A0B08] text-[#FFD700] rounded-lg border-b-4 border-[#5D4037] hover:bg-[#2C1810] active:border-b-0 active:translate-y-1 transition-all"
                         title="Edit Goal"
                     >
                         <Pencil className="w-4 h-4" />
                     </button>
                     <button
                         onClick={resetGoal}
-                        className="p-3 bg-[#5D2020] text-[#FF8A80] rounded-lg border-b-4 border-[#2C0B0B] hover:bg-[#7F2A2A] active:border-b-0 active:translate-y-1 transition-all text-xs font-bold"
+                        className="p-3 bg-[#1A0B08] text-[#FF5252] rounded-lg border-b-4 border-[#5D4037] hover:bg-[#2C1810] active:border-b-0 active:translate-y-1 transition-all text-xs font-bold"
                     >
                         RESET
                     </button>
@@ -170,12 +164,12 @@ export default function Dashboard() {
 
             {/* FULL SCREEN MENU OVERLAY */}
             {showGoalMenu && (
-                <div className="fixed inset-0 z-[100] bg-[#2C1810]/95 backdrop-blur-md flex flex-col p-6 animate-fade-in font-['Courier Prime']">
+                <div className="fixed inset-0 z-[100] bg-[#0F0502]/95 backdrop-blur-md flex flex-col p-6 animate-fade-in font-['Courier_Prime']">
                     <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl text-[#CDA434] font-['Righteous']">SELECT SAVE FILE</h2>
+                        <h2 className="text-2xl text-[#FFD700] font-['Righteous']">SELECT SAVE FILE</h2>
                         <button
                             onClick={() => setShowGoalMenu(false)}
-                            className="p-2 bg-[#4E342E] text-[#E8DCC4] rounded-full hover:bg-[#5D4037] transition-colors"
+                            className="p-2 bg-[#1A0B08] text-[#FFF8E7] rounded-full hover:bg-[#2C1810] transition-colors"
                         >
                             <X className="w-6 h-6" />
                         </button>
@@ -189,13 +183,13 @@ export default function Dashboard() {
                                 className={cn(
                                     "w-full text-left p-4 rounded-xl border-2 transition-all group flex items-center justify-between",
                                     g.id === goal.id
-                                        ? "bg-[#CDA434] border-[#FFD770] text-[#2C1810] shadow-[0_0_20px_rgba(205,164,52,0.3)] transform scale-[1.02]"
-                                        : "bg-[#3E2723] border-[#5D4037] text-[#E8DCC4] hover:border-[#CDA434] hover:bg-[#4E342E]"
+                                        ? "bg-[#FFD700] border-[#FFD700] text-[#2C1810] shadow-[0_0_10px_rgba(255,215,0,0.5)] transform scale-[1.02]"
+                                        : "bg-[#1A0B08] border-[#5D4037] text-[#FFF8E7] hover:border-[#FFD700] hover:bg-[#2C1810]"
                                 )}
                             >
                                 <div>
                                     <div className="font-bold text-lg mb-1">{g.name}</div>
-                                    <div className="text-xs opacity-70 font-mono">
+                                    <div className="text-xs opacity-70 font-['VT323']">
                                         ₹{g.targetAmount.toLocaleString()} • {g.frequency}
                                     </div>
                                 </div>
@@ -207,7 +201,7 @@ export default function Dashboard() {
                     <div className="mt-6 pt-6 border-t border-[#5D4037]">
                         <button
                             onClick={handleCreateNew}
-                            className="w-full py-4 bg-transparent border-2 border-dashed border-[#CDA434] text-[#CDA434] font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#CDA434]/10 transition-all active:scale-[0.98]"
+                            className="w-full py-4 bg-transparent border-2 border-dashed border-[#FFD700] text-[#FFD700] font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#FFD700]/10 transition-all active:scale-[0.98]"
                         >
                             <Plus className="w-5 h-5" />
                             START NEW SAVE FILE

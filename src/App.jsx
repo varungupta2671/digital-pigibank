@@ -3,8 +3,7 @@ import { ToastProvider } from './context/ToastContext';
 import GoalForm from './components/GoalForm';
 import Dashboard from './components/Dashboard';
 
-function PiggyApp() {
-
+function InnerApp() {
     const { goal, isEditing, isLoading } = usePiggy();
 
     if (isLoading) {
@@ -37,7 +36,7 @@ function App() {
     return (
         <ToastProvider>
             <PiggyProvider>
-                <PiggyApp />
+                <InnerApp />
             </PiggyProvider>
         </ToastProvider>
     );

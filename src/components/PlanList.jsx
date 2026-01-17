@@ -6,18 +6,16 @@ import { cn } from '../utils/cn';
 
 export default function PlanList() {
     const { savingsPlan, accounts, makePayment } = usePiggy();
-    const { showToast } = useToast();
+    const { addToast } = useToast();
 
-    // Payment Modal State
     const [selectedBit, setSelectedBit] = useState(null);
     const [selectedAccount, setSelectedAccount] = useState('');
-    const [paymentStep, setPaymentStep] = useState('initial'); // 'initial', 'confirming'
+    const [paymentStep, setPaymentStep] = useState('initial');
 
     const handleTileClick = (bit) => {
         if (bit.status === 'paid') return;
         setSelectedBit(bit);
         setPaymentStep('initial');
-        // Default to first account if available
         if (accounts.length > 0) setSelectedAccount(accounts[0].id);
     };
 
@@ -27,42 +25,33 @@ export default function PlanList() {
     };
 
     const handleLaunchApp = () => {
-        // Construct generic UPI link
         const receiverVpa = accounts.find(a => a.id === parseInt(selectedAccount))?.upiId;
-
         if (!receiverVpa) {
-            showToast('Please select a valid savings account', 'error');
+            addToast('Please select a valid savings account', 'error');
             return;
         }
-
         const upiLink = `upi://pay?pa=${receiverVpa}&pn=PiggyBankSave&tn=GoalSave&am=${selectedBit.amount}&cu=INR`;
-
-        // Open App
         window.location.href = upiLink;
-
-        // Switch UI to confirmation mode immediately
         setPaymentStep('confirming');
     };
 
     const handleVerification = (didPay) => {
         if (didPay) {
             makePayment(selectedBit.id, selectedAccount || 'manual');
-            showToast(`Ticket Checked! ₹${selectedBit.amount} Saved.`, 'success');
+            addToast(`Ticket Checked! ₹${selectedBit.amount} Saved.`, 'success');
             handleCloseModal();
         } else {
-            // User cancelled or failed
             setPaymentStep('initial');
         }
     };
 
     return (
-        <div className="space-y-6 pb-20 font-['Courier Prime']">
+        <div className="space-y-6 pb-20 font-['Courier_Prime']">
 
             {/* Payment Modal Overlay */}
             {selectedBit && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F0502]/95 backdrop-blur-md animate-fade-in">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F0502]/90 backdrop-blur-sm animate-fade-in">
                     <div className="bg-[#1A0B08] w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden border-4 border-[#FFD700] relative">
-                        {/* Receipt Pattern Top */}
                         <div className="absolute top-0 left-0 w-full h-4 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMTBMMTAgMEwyMCAxMFoiIGZpbGw9IiMwRjA1MDIiLz48L3N2Zz4=')] opacity-50"></div>
 
                         <div className="p-6 text-center">
@@ -73,7 +62,6 @@ export default function PlanList() {
                                 ₹{selectedBit.amount}
                             </div>
 
-                            {/* STEP 1: SELECT & LAUNCH */}
                             {paymentStep === 'initial' && (
                                 <div className="space-y-4 animate-slide-in-up">
                                     <div className="text-left">
@@ -119,7 +107,6 @@ export default function PlanList() {
                                 </div>
                             )}
 
-                            {/* STEP 2: CONFIRMATION */}
                             {paymentStep === 'confirming' && (
                                 <div className="space-y-4 animate-fade-in">
                                     <div className="bg-[#2C1810] p-4 rounded-xl border border-[#5D4037]">
@@ -168,14 +155,12 @@ export default function PlanList() {
             </div>
 
             <div className="p-4 bg-[#1A0B08] rounded-xl border-4 border-[#FFD700] shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative overflow-hidden">
-                {/* Wood Texture Background Effect */}
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
 
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-3 relative z-10">
                     {savingsPlan.map((bit) => {
                         const isPaid = bit.status === 'paid';
                         const date = new Date(bit.dueDate);
-                        // Random rotation for organic feel
                         const rotation = Math.random() * 4 - 2;
 
                         return (
@@ -205,7 +190,6 @@ export default function PlanList() {
                                     </>
                                 )}
 
-                                {/* Tooltip for cleaner UI */}
                                 {!isPaid && (
                                     <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#000] text-[#FFD700] text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-xl border border-[#FFD700] transition-opacity font-['VT323'] tracking-widest text-lg">
                                         DUE: {date.toLocaleDateString()}
