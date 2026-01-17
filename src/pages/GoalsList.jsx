@@ -12,7 +12,8 @@ export default function GoalsList() {
     };
 
     const handleCreateNew = () => {
-        switchGoal(null);
+        // switchGoal(null); // No longer needed as CreateGoal/GoalForm handles state
+        navigate('/create');
     };
 
     return (

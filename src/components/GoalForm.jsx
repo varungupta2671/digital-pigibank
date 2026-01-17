@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { usePiggy } from '../context/PiggyContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Target, Calendar, ArrowRight, Clock, X, Type } from 'lucide-react';
 
 export default function GoalForm() {
     const { createGoal, goal, isEditing, cancelEditing } = usePiggy();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
@@ -11,6 +14,8 @@ export default function GoalForm() {
     const [durationUnit, setDurationUnit] = useState('months');
     const [frequency, setFrequency] = useState('daily');
     const [estimatedSlots, setEstimatedSlots] = useState(0);
+
+    const isCreating = location.pathname === '/create';
 
     useEffect(() => {
         if (isEditing && goal) {
@@ -59,10 +64,21 @@ export default function GoalForm() {
 
     }, [durationValue, durationUnit, frequency]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!amount || estimatedSlots <= 0) return;
-        createGoal(name, amount, estimatedSlots, frequency, durationValue, durationUnit);
+        const newId = await createGoal(name, amount, estimatedSlots, frequency, durationValue, durationUnit);
+        if (newId) {
+            navigate(`/goal/${newId}`);
+        }
+    };
+
+    const handleClose = () => {
+        if (isEditing) {
+            cancelEditing();
+        } else {
+            navigate('/');
+        }
     };
 
     return (
@@ -72,9 +88,9 @@ export default function GoalForm() {
             <div className="absolute bottom-2 left-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
             <div className="absolute bottom-2 right-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
 
-            {isEditing && (
+            {(isEditing || isCreating) && (
                 <button
-                    onClick={cancelEditing}
+                    onClick={handleClose}
                     className="absolute top-4 right-4 p-2 text-[#FFF8E7] hover:text-[#FFD700] bg-[#0F0502] rounded-full transition-colors border border-[#5D4037]"
                 >
                     <X className="w-4 h-4" />

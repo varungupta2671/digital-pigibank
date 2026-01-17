@@ -105,6 +105,8 @@ export function PiggyProvider({ children }) {
 
         await db.set(STORES_CONSTANTS.GOALS, newGoal);
         await db.set(STORES_CONSTANTS.META, newId, 'activeGoalId');
+
+        return newId;
     };
 
     // Extracted logic for plan generation to be reused

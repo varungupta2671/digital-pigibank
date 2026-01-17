@@ -4,6 +4,7 @@ import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import GoalForm from './components/GoalForm';
+import CreateGoal from './pages/CreateGoal';
 import GoalsList from './pages/GoalsList';
 import GoalDetail from './pages/GoalDetail';
 import About from './pages/About';
@@ -20,8 +21,8 @@ function AppContent() {
         );
     }
 
-    // Show goal form if editing or no goal exists
-    if (isEditing || (!goal && window.location.pathname.includes('/goal/'))) {
+    // Show goal form if editing (modal mode)
+    if (isEditing) {
         return (
             <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
                 <GoalForm />
@@ -34,6 +35,7 @@ function AppContent() {
             <Header />
             <Routes>
                 <Route path="/" element={<GoalsList />} />
+                <Route path="/create" element={<CreateGoal />} />
                 <Route path="/goal/:id" element={<GoalDetail />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
