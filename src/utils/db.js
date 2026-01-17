@@ -1,9 +1,10 @@
 const DB_NAME = 'PiggyBankDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2; // Incremented for new store
 const STORES = {
     GOALS: 'goals',
     ACCOUNTS: 'accounts',
     TRANSACTIONS: 'transactions',
+    ACHIEVEMENTS: 'achievements',
     META: 'meta' // For activeGoalId etc.
 };
 
@@ -24,6 +25,9 @@ export const db = {
                 }
                 if (!db.objectStoreNames.contains(STORES.TRANSACTIONS)) {
                     db.createObjectStore(STORES.TRANSACTIONS, { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains(STORES.ACHIEVEMENTS)) {
+                    db.createObjectStore(STORES.ACHIEVEMENTS, { keyPath: 'id' });
                 }
                 if (!db.objectStoreNames.contains(STORES.META)) {
                     db.createObjectStore(STORES.META);

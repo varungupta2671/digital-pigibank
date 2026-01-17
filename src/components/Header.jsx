@@ -1,4 +1,4 @@
-import { Home, Info, Mail, Palette } from 'lucide-react';
+import { Home, Info, Mail, Palette, Trophy } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
@@ -70,6 +70,19 @@ export default function Header() {
                     >
                         <Mail className="w-4 h-4" />
                         <span className="hidden sm:inline">Contact</span>
+                    </Link>
+
+                    <Link
+                        to="/achievements"
+                        className={cn(
+                            "flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-bold uppercase tracking-wider",
+                            isActive('/achievements')
+                                ? "bg-[#FFD700] text-[#2C1810]"
+                                : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                        )}
+                    >
+                        <Trophy className="w-4 h-4" />
+                        <span className="hidden sm:inline">Trophies</span>
                     </Link>
 
                     {/* Theme Switcher */}

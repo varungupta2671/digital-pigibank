@@ -7,6 +7,7 @@ import GoalForm from './components/GoalForm';
 import CreateGoal from './pages/CreateGoal';
 import GoalsList from './pages/GoalsList';
 import GoalDetail from './pages/GoalDetail';
+import Achievements from './pages/Achievements';
 import About from './pages/About';
 import Contact from './pages/Contact';
 
@@ -37,6 +38,7 @@ function AppContent() {
                 <Route path="/" element={<GoalsList />} />
                 <Route path="/create" element={<CreateGoal />} />
                 <Route path="/goal/:id" element={<GoalDetail />} />
+                <Route path="/achievements" element={<Achievements />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

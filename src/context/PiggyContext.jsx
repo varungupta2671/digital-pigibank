@@ -1,7 +1,68 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { db, STORES_CONSTANTS } from '../utils/db';
+import { useToast } from './ToastContext';
+import { Trophy, Target, TrendingUp, Star, Zap, Award } from 'lucide-react';
 
 const PiggyContext = createContext();
+
+export const ACHIEVEMENT_DEFINITIONS = [
+    {
+        id: 'beginners_luck',
+        title: "Beginner's Luck",
+        description: "Create your first savings goal.",
+        icon: Star,
+        color: "text-yellow-400"
+    },
+    {
+        id: 'first_drop',
+        title: "First Drop",
+        description: "Save your first ticket.",
+        icon: Zap,
+        color: "text-blue-400"
+    },
+    {
+        id: 'high_five',
+        title: "High Five",
+        description: "Save 5 tickets total.",
+        icon: TrendingUp,
+        color: "text-green-400"
+    },
+    {
+        id: 'on_a_roll',
+        title: "On A Roll",
+        description: "Save 10 tickets total.",
+        icon: TrendingUp,
+        color: "text-purple-400"
+    },
+    {
+        id: 'big_spender',
+        title: "Big Spender",
+        description: "Save a single ticket worth over ₹1000.",
+        icon: Award,
+        color: "text-orange-400"
+    },
+    {
+        id: 'halfway_hero',
+        title: "Halfway Hero",
+        description: "Reach 50% completion on a goal.",
+        icon: Target,
+        color: "text-indigo-400"
+    },
+    {
+        id: 'goal_crusher',
+        title: "Goal Crusher",
+        description: "Complete a savings goal (100%).",
+        icon: Trophy,
+        color: "text-amber-500"
+    },
+    {
+        id: 'piggy_master',
+        title: "Piggy Master",
+        description: "Complete 3 savings goals.",
+        icon: Trophy,
+        color: "text-red-500"
+    }
+];
 
 export function usePiggy() {
     return useContext(PiggyContext);
@@ -13,8 +74,11 @@ export function PiggyProvider({ children }) {
     const [activeGoalId, setActiveGoalId] = useState(null);
     const [accounts, setAccounts] = useState([]);
     const [transactions, setTransactions] = useState([]);
+    const [unlockedAchievements, setUnlockedAchievements] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+
+    const { addToast } = useToast();
 
     // Derived State: Active Goal & Plan
     const activeGoal = goals.find(g => g.id === activeGoalId) || null;
@@ -28,6 +92,7 @@ export function PiggyProvider({ children }) {
                 const dbGoals = await db.getAll(STORES_CONSTANTS.GOALS);
                 const dbAccounts = await db.getAll(STORES_CONSTANTS.ACCOUNTS);
                 const dbTransactions = await db.getAll(STORES_CONSTANTS.TRANSACTIONS);
+                const dbAchievements = await db.getAll(STORES_CONSTANTS.ACHIEVEMENTS);
                 const activeId = await db.get(STORES_CONSTANTS.META, 'activeGoalId');
 
                 // HEALER: Check for duplicate Bit IDs in loaded goals
@@ -59,6 +124,7 @@ export function PiggyProvider({ children }) {
 
                 setAccounts(dbAccounts);
                 setTransactions(dbTransactions);
+                setUnlockedAchievements(dbAchievements.map(a => a.id));
                 setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
             } catch (error) {
                 console.error("Failed to initialize DB:", error);
@@ -74,6 +140,66 @@ export function PiggyProvider({ children }) {
     const saveGoal = async (updatedGoal) => {
         setGoals(prev => prev.map(g => g.id === updatedGoal.id ? updatedGoal : g));
         await db.set(STORES_CONSTANTS.GOALS, updatedGoal);
+    };
+
+    // Achievement Check Logic
+    const checkAchievements = async (triggerType, data) => {
+        const newUnlocks = [];
+        const unlockedSet = new Set(unlockedAchievements);
+
+        const unlock = async (id) => {
+            if (!unlockedSet.has(id)) {
+                const achievement = ACHIEVEMENT_DEFINITIONS.find(a => a.id === id);
+                if (achievement) {
+                    const record = { id, unlockedAt: new Date().toISOString() };
+                    await db.set(STORES_CONSTANTS.ACHIEVEMENTS, record);
+                    setUnlockedAchievements(prev => [...prev, id]);
+                    unlockedSet.add(id);
+                    addToast(`🏆 Unlocked: ${achievement.title}!`, 'success');
+                }
+            }
+        };
+
+        if (triggerType === 'GOAL_CREATED') {
+            await unlock('beginners_luck');
+        }
+
+        if (triggerType === 'PAYMENT_MADE') {
+            const { amount, goal } = data;
+
+            await unlock('first_drop');
+
+            // Recalculate total transactions across all goals (optimistic updated state)
+            // Note: transactions state might not be updated yet if called immediately, so we use current transactions + 1
+            const totalTx = transactions.length + 1;
+
+            if (totalTx >= 5) await unlock('high_five');
+            if (totalTx >= 10) await unlock('on_a_roll');
+            if (amount > 1000) await unlock('big_spender');
+
+            // Goal Progress Checks
+            const totalSaved = goal.savingsPlan
+                .filter(bit => bit.status === 'paid' || bit.id === data.bitId) // Include current bit
+                .reduce((sum, bit) => sum + bit.amount, 0);
+
+            const progress = (totalSaved / goal.targetAmount) * 100;
+
+            if (progress >= 50) await unlock('halfway_hero');
+            if (progress >= 100) {
+                await unlock('goal_crusher');
+
+                // Check if 3 goals are completed
+                const completedGoals = goals.filter(g => {
+                    const saved = g.savingsPlan
+                        .filter(b => b.status === 'paid')
+                        .reduce((s, b) => s + b.amount, 0);
+                    return saved >= g.targetAmount;
+                }).length;
+
+                // If this is the 3rd goal (current goal becomes complete)
+                if (completedGoals + 1 >= 3) await unlock('piggy_master');
+            }
+        }
     };
 
     // Actions
@@ -105,6 +231,9 @@ export function PiggyProvider({ children }) {
 
         await db.set(STORES_CONSTANTS.GOALS, newGoal);
         await db.set(STORES_CONSTANTS.META, newId, 'activeGoalId');
+
+        // Check Achievements
+        checkAchievements('GOAL_CREATED');
 
         return newId;
     };
@@ -241,6 +370,9 @@ export function PiggyProvider({ children }) {
             };
             setTransactions(prev => [...prev, newTx]);
             await db.set(STORES_CONSTANTS.TRANSACTIONS, newTx);
+
+            // Check Achievements
+            checkAchievements('PAYMENT_MADE', { amount: bit.amount, goal: updatedGoal, bitId });
         }
     };
 
@@ -265,6 +397,7 @@ export function PiggyProvider({ children }) {
         savingsPlan,
         accounts,
         transactions,
+        unlockedAchievements,
         isLoading,
         createGoal,
         updateGoal,
