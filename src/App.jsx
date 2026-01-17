@@ -1,5 +1,6 @@
 import { usePiggy, PiggyProvider } from './context/PiggyContext';
 import { ToastProvider } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 import GoalForm from './components/GoalForm';
 import Dashboard from './components/Dashboard';
 
@@ -34,11 +35,13 @@ function InnerApp() {
 
 function App() {
     return (
-        <ToastProvider>
-            <PiggyProvider>
-                <InnerApp />
-            </PiggyProvider>
-        </ToastProvider>
+        <ThemeProvider>
+            <ToastProvider>
+                <PiggyProvider>
+                    <InnerApp />
+                </PiggyProvider>
+            </ToastProvider>
+        </ThemeProvider>
     );
 }
 

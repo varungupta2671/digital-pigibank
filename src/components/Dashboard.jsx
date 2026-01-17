@@ -1,5 +1,6 @@
 import { usePiggy } from '../context/PiggyContext';
-import { Wallet, Settings, Pencil, X, Plus, ChevronRight, Trophy } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Wallet, Settings, Pencil, X, Plus, ChevronRight, Trophy, Palette } from 'lucide-react';
 import PlanList from './PlanList';
 import AccountSetup from './AccountSetup';
 import { useState } from 'react';
@@ -7,8 +8,10 @@ import { cn } from '../utils/cn';
 
 export default function Dashboard() {
     const { goal, goals, savingsPlan, resetGoal, startEditing, switchGoal } = usePiggy();
+    const { theme, setTheme } = useTheme();
     const [activeTab, setActiveTab] = useState('plan');
     const [showGoalMenu, setShowGoalMenu] = useState(false);
+    const [showThemeMenu, setShowThemeMenu] = useState(false);
 
     const totalSaved = savingsPlan
         .filter(bit => bit.status === 'paid')
@@ -69,16 +72,71 @@ export default function Dashboard() {
                         <p className="text-[#A1887F] text-xs font-bold uppercase tracking-widest pl-1">Piggy Bank OS v2.0</p>
                     </div>
 
-                    <button
-                        onClick={() => setShowGoalMenu(true)}
-                        className="bg-[#2C1810] text-[#FFD700] px-3 py-2 rounded-lg border border-[#5D4037] text-[10px] font-bold uppercase tracking-widest hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
-                    >
-                        My Goals
-                    </button>
+                    <div className="flex gap-2 relative">
+                        {/* Theme Switcher */}
+                        <div className="relative">
+                            <button
+                                onClick={() => setShowThemeMenu(!showThemeMenu)}
+                                className="bg-[#2C1810] text-[#FFD700] p-2 rounded-lg border border-[#5D4037] hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
+                                title="Change Theme"
+                            >
+                                <Palette className="w-4 h-4" />
+                            </button>
+
+
+                            {/* Theme Dropdown */}
+                            {showThemeMenu && (
+                                <>
+                                    {/* Backdrop */}
+                                    <div
+                                        className="fixed inset-0 z-[998]"
+                                        onClick={() => setShowThemeMenu(false)}
+                                    />
+
+                                    <div className="absolute top-full right-0 mt-2 bg-[#1A0B08] border-2 border-[#FFD700] rounded-lg shadow-2xl overflow-hidden z-[999] min-w-[150px] animate-slide-in-down">
+                                        <button
+                                            onClick={() => { setTheme('retro'); setShowThemeMenu(false); }}
+                                            className={cn(
+                                                "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
+                                                theme === 'retro' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                            )}
+                                        >
+                                            🎮 Retro
+                                        </button>
+                                        <button
+                                            onClick={() => { setTheme('cyber'); setShowThemeMenu(false); }}
+                                            className={cn(
+                                                "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
+                                                theme === 'cyber' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                            )}
+                                        >
+                                            ⚡ Cyber
+                                        </button>
+                                        <button
+                                            onClick={() => { setTheme('minimal'); setShowThemeMenu(false); }}
+                                            className={cn(
+                                                "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors",
+                                                theme === 'minimal' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                            )}
+                                        >
+                                            ✨ Minimal
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+
+                        <button
+                            onClick={() => setShowGoalMenu(true)}
+                            className="bg-[#2C1810] text-[#FFD700] px-3 py-2 rounded-lg border border-[#5D4037] text-[10px] font-bold uppercase tracking-widest hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
+                        >
+                            My Goals
+                        </button>
+                    </div>
                 </div>
 
                 {/* Digital Counter Display */}
-                <div className="text-center mb-6 relative z-10 bg-[#0F0502] p-4 rounded-xl border-2 border-[#5D4037] shadow-inner relative">
+                <div className="text-center mb-6 relative bg-[#0F0502] p-4 rounded-xl border-2 border-[#5D4037] shadow-inner">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-50"></div>
 
                     <p className="text-[#A1887F] text-[10px] mb-1 uppercase tracking-widest font-bold font-sans">TARGET STATUS</p>
